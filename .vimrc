@@ -11,6 +11,8 @@ set backspace=indent,eol,start
 nmap no :noh<CR>
 nnoremap <F2> :set paste<CR>i
 inoremap <F2> <Esc>:set paste<CR>i
+nnoremap nop :set nopaste<CR>
+inoremap nop <Esc>:set nopaste<CR>
 nnoremap <c-s> :w<CR> 
 inoremap <c-s> <Esc>:w<CR>
 nnoremap <c-z> u 
@@ -73,11 +75,14 @@ set guifont=Monaco:h17          " FontFamily and FontSize
 set hidden
 set updatetime=100
 set shortmess+=c
-" tab auto commenption
-inoremap <silent><expr> <TAB>
+" use ctrl + t to type real tab
+inoremap <c-t> <TAB> 
+" use tab to invoke auto commenption and go down next commenption entry
+inoremap <silent><expr> <TAB> 
       \ pumvisible() ? "\<C-n>" :
       \ <SID>check_back_space() ? "\<TAB>" :
       \ coc#refresh()
+" use shift + tab to go up previous commenption entry
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 function! s:check_back_space() abort
 	  let col = col('.') - 1
