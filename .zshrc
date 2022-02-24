@@ -5,17 +5,26 @@ plugins=(git)
 source $ZSH/oh-my-zsh.sh
 alias ohmyzsh="mate ~/.oh-my-zsh"
 
+# set git editor to vim
+export GIT_EDITOR=vim
+
 # proxy
 export http_proxy=http://192.168.10.1:7890
 export https_proxy=http://192.168.10.1:7890
 
 # bind key vim map
 bindkey -v
+
 # ctrl + r to search history
 bindkey '^R' history-incremental-search-backward 
+
 # turn off the binding of Ctrl-S
+# so that vim can use <c-s> to save changes
 bindkey -r '\C-s'
 stty -ixon
+
+host=~/Documents/host-linux
+guest=~/Documents/guest-linux
 
 # clipboard
 set clipboard=unamed
@@ -36,6 +45,7 @@ alias lskernel='dpkg --list | grep linux-image'
 
 # cat printk
 alias cpk='sudo cat /proc/sys/kernel/printk'
+
 # echo printk
 epk() {
         sudo bash -c "echo $1 $2 $3 $4 > /proc/sys/kernel/printk"

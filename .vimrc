@@ -1,13 +1,16 @@
 " Basic settings
+syntax on
 set number
 set mouse=a
-syntax on
 set cursorline
 set smartindent
 set tabstop=4
 set softtabstop=4
 set shiftwidth=4
 set backspace=indent,eol,start
+set guifont=Monaco:h17          " FontFamily and FontSize
+set t_Co=256
+set t_ut=
 nmap no :noh<CR>
 nnoremap <F2> :set paste<CR>i
 inoremap <F2> <Esc>:set paste<CR>i
@@ -16,6 +19,13 @@ inoremap nop <Esc>:set nopaste<CR>
 nnoremap <c-s> :w<CR> 
 inoremap <c-s> <Esc>:w<CR>
 nnoremap <c-z> u 
+
+" True Color Supports
+if exists('+termguicolors')
+  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+  set termguicolors
+endif
 
 
 " NerdTree
@@ -60,15 +70,34 @@ nmap <space>  <Plug>(easymotion-s2)
 autocmd FileType python,shell,coffee set commentstring=#\ %s
 
 
-" Gruvbox Color Theme
-" use this command to solve gruvbox theme not found error:
+" Color Theme
+
+" solve theme not found error:
 " mkdir -p ~/.vim/colors
-" cp ~/.vim/plugged/gruvbox/colors/gruvbox.vim ~/.vim/colors/gruvbox.vim 
-set bg=dark
-let g:gruvbox_contrast_dark = 'medium' " option value: soft|medium|hard
-let g:gruvbox_contrast_light = 'hard'
-colorscheme gruvbox             
-set guifont=Monaco:h17          " FontFamily and FontSize
+" cp ~/.vim/plugged/${plug}/colors/${plug}.vim ~/.vim/colors/
+" (optionally) cp ~/.vim/plugged/${plug}/autoload/${plug}.vim ~/.vim/autoload/
+
+" Theme - Gruvbox 
+" set bg=dark
+" let g:gruvbox_contrast_dark = 'medium' " option value: soft|medium|hard
+" let g:gruvbox_contrast_light = 'hard'
+" colorscheme gruvbox             
+
+" Theme - OneHalf
+" colorscheme onehalfdark
+" let g:airline_theme='onehalfdark'
+
+" Theme - OneDark
+" colorscheme onedark
+" let g:airline_theme='onedark'
+
+" Theme - CodeDark
+" colorscheme codedark
+" let g:airline_theme = 'codedark'
+
+" Theme - Sonokai
+let g:sonokai_style = 'atlantis'
+colorscheme sonokai
 
 
 " Coc.nvim 
@@ -114,6 +143,7 @@ function! <SID>show_doc()
 	execute '!' . &keywordprg . " " . expand('<cword>')
   endif
 endfunction
+
 " CoC Plug
 let g:coc_global_extensions = ['coc-json', 'coc-marketplace', 'coc-python', 'coc-vimlsp', 'coc-cmake', 'coc-java']
 " CoC Commands
@@ -148,13 +178,17 @@ Plug 'mg979/vim-visual-multi'
 Plug 'vim-airline/vim-airline'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'morhetz/gruvbox'
+Plug 'sonph/onehalf', { 'rtp': 'vim'  }
+Plug 'joshdick/onedark.vim'
+Plug 'tomasiser/vim-code-dark'
+Plug 'sainnhe/sonokai'
 Plug 'MattesGroeger/vim-bookmarks'
 Plug 'Yggdroot/LeaderF', { 'do': ':LeaderfInstallCExtension'  }
 call plug#end()
+
 " Vim Plug Commands
 " :PlugInstall
 " :PlugClean             - Remove unlisted plugins
 " :PlugUpgrade       - Upgrade vim-plug itself
 " :PlugUpdate            - Install or update plugins
 " :PlugStatus            - List plugins
-
