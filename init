@@ -1,0 +1,41 @@
+#!/bin/sh
+
+hostname=broadwell
+
+mount -t proc proc /proc
+mount -t sysfs sysfs /sys
+mount -t devtmpfs devtmpfs /dev
+mount /dev/vda /root
+
+cd root
+mount -t proc proc proc
+mount -t sysfs sysfs sys
+mount -t devtmpfs devtmpfs dev
+mount -t debugfs debugfs sys/kernel/debug
+mkdir -p /dev/pts
+mount -t devpts devpts dev/pts
+
+# Network & Hostname
+br0_ip=192.168.18.158
+eth0_ip=192.168.18.51/20
+ip link set eth0 up
+ip addr add $eth0_ip dev eth0 
+ip route add default via $br0_ip
+ip link set lo up
+ip addr add 127.0.0.1/8 dev lo
+echo "nameserver 114.114.114.114" > etc/resolv.conf
+echo "127.0.0.1    localhost.localdomain localhost" > etc/hosts
+echo "127.0.0.1    $hostname" >> etc/hosts
+echo $hostname > etc/hostname
+
+echo "7 4 1 7" > proc/sys/kernel/printk
+
+cat <<!
+
+  /\/\ (_)_ __ (_)   / /(_)_ __  _   ___  __
+ /    \| | '_ \| |  / / | | '_ \| | | \ \/ /
+/ /\/\ \ | | | | | / /__| | | | | |_| |>  < 
+\/    \/_|_| |_|_| \____/_|_| |_|\__,_/_/\_\ 
+
+!
+chroot /root bash
