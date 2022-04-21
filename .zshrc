@@ -20,6 +20,7 @@ plugins=(
 	vi-mode
 	command-not-found
 	extract
+	zsh-autosuggestions
 )
 # oh-my-zsh settings
 ZSH_THEME="terminalparty"
