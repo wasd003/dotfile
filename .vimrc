@@ -1,8 +1,22 @@
-" Basic settings
+
+
+ """""""""""""""""""""""""""""""""""""""""""""""""
+"                                                 "
+" ____   ____.___   _____ ___________________     "
+"  \   \ /   /|   | /     \\______   \_   ___ \   "
+"   \   Y   / |   |/  \ /  \|       _/    \  \/   "
+"    \     /  |   /    Y    \    |   \     \____  "
+"     \___/   |___\____|__  /____|_  /\______  /  "
+"                         \/       \/        \/   "
+"                                                 "
+ """""""""""""""""""""""""""""""""""""""""""""""""
+
+
+" Basic Settings
 syntax on
 set number
-set mouse=a
 set cursorline
+set hlsearch
 set smartindent
 set tabstop=4
 set softtabstop=4
@@ -11,6 +25,9 @@ set backspace=indent,eol,start
 set guifont=Monaco:h17          " FontFamily and FontSize
 set t_Co=256
 set t_ut=
+
+
+" Custom Commands
 nmap no :noh<CR>
 nnoremap <F2> :set paste<CR>i
 inoremap <F2> <Esc>:set paste<CR>i
@@ -19,6 +36,17 @@ inoremap nop <Esc>:set nopaste<CR>
 nnoremap <c-s> :w<CR> 
 inoremap <c-s> <Esc>:w<CR>
 nnoremap <c-z> u 
+
+
+" Cursor Shape
+let &t_SI = "\e[6 q"
+let &t_EI = "\e[2 q"
+
+augroup myCmds
+au!
+autocmd VimEnter * silent !echo -ne "\e[2 q"
+augroup END
+
 
 " True Color Supports
 if exists('+termguicolors')
@@ -36,10 +64,22 @@ map <C-h> :tabp<CR>
 map <C-n> :tabnew<CR>
 
 
+" Tmux Complete
+" <c-x> <c-u> 
+
+
 " Vim Visual Multi
 let g:VM_maps = {}
 let g:VM_maps['Find Under']         = '<C-k>'           " replace C-n
 let g:VM_maps['Find Subword Under'] = '<C-k>'           " replace visual C-n
+
+
+" CtrlSF
+nnoremap <s-f> :CtrlSF<Space>
+" q - quit
+" p - glance
+" enter - open file in current tab
+" t - open file in new tab
 
 
 " Airline
@@ -92,12 +132,12 @@ autocmd FileType python,shell,coffee set commentstring=#\ %s
 " let g:airline_theme='onedark'
 
 " Theme - CodeDark
-" colorscheme codedark
-" let g:airline_theme = 'codedark'
+colorscheme codedark
+let g:airline_theme = 'codedark'
 
 " Theme - Sonokai
-let g:sonokai_style = 'atlantis'
-colorscheme sonokai
+" let g:sonokai_style = 'atlantis'
+" colorscheme sonokai
 
 
 " Coc.nvim 
@@ -167,8 +207,7 @@ nmap <C-f> :LeaderfLine<CR>
 
 " Vim Plug
 call plug#begin('~/.vim/plugged')
-Plug 'junegunn/fzf', { 'dir': '~/opt/fzf'  }
-Plug 'junegunn/fzf.vim'
+Plug 'dyng/ctrlsf.vim'
 Plug 'preservim/nerdtree'
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-commentary'
@@ -184,6 +223,7 @@ Plug 'tomasiser/vim-code-dark'
 Plug 'sainnhe/sonokai'
 Plug 'MattesGroeger/vim-bookmarks'
 Plug 'Yggdroot/LeaderF', { 'do': ':LeaderfInstallCExtension'  }
+Plug 'wellle/tmux-complete.vim'
 call plug#end()
 
 " Vim Plug Commands
