@@ -20,7 +20,6 @@ plugins=(
 	vi-mode
 	command-not-found
 	extract
-	zsh-autosuggestions
 )
 # oh-my-zsh settings
 ZSH_THEME="terminalparty"
@@ -30,9 +29,14 @@ alias ohmyzsh="mate ~/.oh-my-zsh"
 source $ZSH/oh-my-zsh.sh
 
 # zplug
+# zplug install - Install packages in parallel
+# zplug load - Source installed plugins and add installed commands to $PATH
+# list - List installed packages
+# update - Update installed packages in parallel
 if [[ -f ~/.zplug/init.zsh ]] {
   source ~/.zplug/init.zsh
 
+  # zplug's plugin needn't to be writte in plugins array above
   zplug "zsh-users/zsh-syntax-highlighting"
   zplug "zsh-users/zsh-autosuggestions"
 
