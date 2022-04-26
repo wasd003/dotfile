@@ -5,11 +5,8 @@ img_name=flex10
 img_size=8 # unit: GB
 
 img=$img_name.img
-homedir=$(pwd)
-assets=$homedir/assets
-build=$homedir/build
-tmp=$homedir/tmp
-username=jch
+assets=$(pwd)/assets
+build=$(pwd)/build
 
 check_assets(){
 	if [[ ! -d $assets || ! -d $assets/initramfs ]]; then
@@ -67,7 +64,7 @@ create_tapk(){
 
 	# add tapk and connect it to bridge
     sudo ip link del tap$1
-    sudo ip tuntap add tap$1 mode tap user $username
+	sudo ip tuntap add tap$1 mode tap user $(whoami)
 	sudo ip link set tap$1 master br0
     sudo ip link set dev tap$1 up
 }
