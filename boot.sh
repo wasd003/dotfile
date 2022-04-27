@@ -3,18 +3,28 @@
 # qemu line parameter example 
 # https://blog.katastros.com/a?ID=01700-b8d7b378-7800-4354-8201-6743cfa32f85
 
-kernel_path=/home/ldj/nfs/jch-backup/guest-linux
-build=/home/ldj/nfs/jch-backup/run-linux/build
+kernel_path=/home/jch/Documents/guest-linux
+qemu_path=/home/jch/Documents/qemu-6.2.0
+build=/home/jch/Documents/run-linux/build
+
+sudo iptables -P FORWARD ACCEPT
 
 # sudo qemu-system-x86_64 \
     #-serial tcp:localhost:44320 \
 
 rm vm.log
 
-# sriov nic
+# sriov
 # -device vfio-pci,host=5e:00.1,id=mydev0 \
 
-sudo /home/ldj/nfs/jch-backup/run-linux/qemu-6.2.0/build/qemu-system-x86_64 \
+# mq virtio-net
+# -device virtio-net-pci,netdev=vnet,vectors=10,mq=on -netdev tap,id=vnet,vhost=on,ifname=tap0,script=no,queues=4 $@ \
+
+# sq virtio-net
+# -device virtio-net-pci,netdev=vnet -netdev tap,id=vnet,vhost=on,ifname=tap1,script=no $@ \
+
+# sudo $qemu_path/build/qemu-system-x86_64 \
+sudo qemu-system-x86_64 \
 	-name vm,debug-threads=on \
 	-cpu host \
 	--enable-kvm \
@@ -25,5 +35,5 @@ sudo /home/ldj/nfs/jch-backup/run-linux/qemu-6.2.0/build/qemu-system-x86_64 \
 	-kernel $kernel_path/arch/x86/boot/bzImage \
 	-initrd $build/initramfs.cpio.gz \
 	-device virtio-blk-pci,drive=vdisk -drive if=none,id=vdisk,format=raw,file=$build/vmdisk.img \
-    -device virtio-net-pci,netdev=vnet,mac=52:54:00:12:34:88 -netdev tap,id=vnet,vhost=on,ifname=tap1,script=no \
+	-device virtio-net-pci,netdev=vnet,vectors=10,mq=on -netdev tap,id=vnet,vhost=on,ifname=tap1,script=no,queues=4 $@ \
     | tee vm.log
