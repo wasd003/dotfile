@@ -43,17 +43,16 @@ build_initramfs(){
 }
 
 create_br0(){
-	# detect if br0 unavailable
-	echo "br0 unavailable, creating..."
-    if (( $(ip a|grep br0|wc -l) == 0 )); then
+	if ! [ -e /sys/class/net/br0 ]; then
+		echo "br0 unavailable, creating..."
 		# dhcp_ip: host ip which is allocated by dhcp server
-		# eth0: indicates which interface owns dhcp_ip
-		dhcp_ip=$(ip a|grep inet|sed  '/inet6/d'|sed '/127.0.0.1/d'|head -1|awk '{print $2}')
-		eth0=$(ip a|grep inet|sed  '/inet6/d'|sed '/127.0.0.1/d'|head -1|awk '{print $NF}')
-		echo "host ip: $dhcp_ip is held by interface: $eth0 currently"
+		# eth0: indicates which interface owns dhcp_ip currently
+		dhcp_ip=192.169.1.1/24
+		eth0=eno4
         sudo ip link add br0 type bridge
 		sudo ip link set br0 up
 		sudo ip addr add $dhcp_ip dev br0
+		sudo ip addr flush dev $eth0
 		sudo ip link set $eth0 master br0
     fi
 }
