@@ -38,11 +38,11 @@ sudo $qemu_path/build/qemu-system-x86_64 \
 	-cpu host \
 	--enable-kvm \
 	-smp 4 \
-    -m 8G \
+        -m 8G \
 	-nographic \
 	-append "console=ttyS0 nokaslr" \
 	-kernel $kernel_path/arch/x86/boot/bzImage \
 	-initrd $build/initramfs.cpio.gz \
 	-device virtio-blk-pci,drive=vdisk -drive if=none,id=vdisk,format=raw,file=$build/vmdisk.img \
 	-device virtio-net-pci,netdev=vnet,vectors=10,mq=on -netdev tap,id=vnet,vhost=on,ifname=tap1,script=no,queues=4 $@ \
-    | tee vm.log
+        | tee vm.log
