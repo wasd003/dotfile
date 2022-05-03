@@ -1,4 +1,17 @@
 #!/bin/bash
+
+#  __  __       _         __     ___      _               _  #
+# |  \/  | __ _| | _____  \ \   / (_)_ __| |_ _   _  __ _| | #
+# | |\/| |/ _` | |/ / _ \  \ \ / /| | '__| __| | | |/ _` | | #
+# | |  | | (_| |   <  __/   \ V / | | |  | |_| |_| | (_| | | #
+# |_|  |_|\__,_|_|\_\___|    \_/  |_|_|   \__|\__,_|\__,_|_| #
+#                                                            #
+#            __  __            _     _                       #
+#           |  \/  | __ _  ___| |__ (_)_ __   ___            #
+#           | |\/| |/ _` |/ __| '_ \| | '_ \ / _ \           #
+#           | |  | | (_| | (__| | | | | | | |  __/           #
+#           |_|  |_|\__,_|\___|_| |_|_|_| |_|\___|           #
+#                                                            #
 	
 assets=$(pwd)/assets
 build=$(pwd)/build
@@ -47,12 +60,12 @@ create_br0() {
 		# eth0: indicates which interface owns dhcp_ip currently
 		dhcp_ip=192.169.1.1/24
 		eth0=eno4
-        sudo ip link add br0 type bridge
+	        sudo ip link add br0 type bridge
 		sudo ip link set br0 up
 		sudo ip addr add $dhcp_ip dev br0
 		sudo ip addr flush dev $eth0
 		sudo ip link set $eth0 master br0
-    fi
+    	fi
 }
 
 create_tapk() {
@@ -60,10 +73,10 @@ create_tapk() {
 	sudo iptables -P FORWARD ACCEPT
 
 	# add tapk and connect it to bridge
-    sudo ip link del tap$1
+    	sudo ip link del tap$1
 	sudo ip tuntap add tap$1 mode tap user $(whoami)
 	sudo ip link set tap$1 master br0
-    sudo ip link set dev tap$1 up
+    	sudo ip link set dev tap$1 up
 }
 
 build() {

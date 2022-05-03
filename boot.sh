@@ -33,8 +33,7 @@ create_tapk 1
 
 rm vm.log
 
-# sudo $qemu_path/build/qemu-system-x86_64 \
-sudo qemu-system-x86_64 \
+sudo $qemu_path/build/qemu-system-x86_64 \
 	-name vm,debug-threads=on \
 	-cpu host \
 	--enable-kvm \

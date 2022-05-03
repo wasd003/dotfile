@@ -11,7 +11,7 @@
 #### 使用方法:
 
 ```shellpower
-python2.7 grublist
+python2 grublist
 ```
 
 与grub界面相同的操作方法
