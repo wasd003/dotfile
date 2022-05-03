@@ -1,14 +1,9 @@
 #!/bin/bash
 	
-# custom config
-img_name=flex10
-img_size=8 # unit: GB
-
-img=$img_name.img
 assets=$(pwd)/assets
 build=$(pwd)/build
 
-check_assets(){
+check_assets() {
 	if [[ ! -d $assets || ! -d $assets/initramfs ]]; then
 		sudo rm -r $assets
 		echo "assets dir not found, downloading......"
@@ -19,7 +14,10 @@ check_assets(){
 	fi
 }
 
-build_rootfs(){
+build_rootfs() {
+	read -p "please input image name: " img_name
+	read -p "please input image size(GB): " img_size
+	img=$img_name.img
 	mnt_folder=/mnt/$img_name
 	dd if=/dev/zero of=$img bs=1G count=$img_size
 	sudo mkfs.ext4 $img 
@@ -35,14 +33,14 @@ build_rootfs(){
 	echo "create disk with rootfs successfully"
 }
 
-build_initramfs(){
+build_initramfs() {
 	mkdir -p $assets/initramfs
 	cd $assets/initramfs
 	find . -print0 | cpio --null -ov --format=newc \
 		  | gzip -9 > $build/initramfs.cpio.gz
 }
 
-create_br0(){
+create_br0() {
 	if ! [ -e /sys/class/net/br0 ]; then
 		echo "br0 unavailable, creating..."
 		# dhcp_ip: host ip which is allocated by dhcp server
@@ -57,7 +55,7 @@ create_br0(){
     fi
 }
 
-create_tapk(){
+create_tapk() {
 	# firewall settings
 	sudo iptables -P FORWARD ACCEPT
 
@@ -68,20 +66,20 @@ create_tapk(){
     sudo ip link set dev tap$1 up
 }
 
-build(){
+build() {
 	build_rootfs
 	build_initramfs
 	create_br0
 	create_tapk 0
 }
 
-fastbuild(){
+fastbuild() {
 	build_initramfs
 	create_br0
 	create_tapk 0
 }
 
-help(){
+help() {
 	echo "build: build rootfs && initramfs && tap"
 	echo "fastbuild: build initramfs && tap"
 	echo "mkimg: make img"
@@ -89,7 +87,7 @@ help(){
 	echo "mktk [num]: make tapk which connects to br0"
 }
 
-main(){
+main() {
 	if (( $# == 0  )); then
 		echo "please input at least one argument, type help to learn usage :)"
 		return
