@@ -124,12 +124,12 @@ autocmd FileType python,shell,coffee set commentstring=#\ %s
 " let g:airline_theme='onehalfdark'
 
 " Theme - OneDark
-" colorscheme onedark
-" let g:airline_theme='onedark'
+colorscheme onedark
+let g:airline_theme='onedark'
 
 " Theme - CodeDark
-colorscheme codedark
-let g:airline_theme = 'codedark'
+" colorscheme codedark
+" let g:airline_theme = 'codedark'
 
 " Theme - Sonokai
 " let g:sonokai_style = 'atlantis'
@@ -220,6 +220,7 @@ Plug 'sainnhe/sonokai'
 Plug 'MattesGroeger/vim-bookmarks'
 Plug 'Yggdroot/LeaderF', { 'do': ':LeaderfInstallCExtension'  }
 Plug 'wellle/tmux-complete.vim'
+Plug 'ryanoasis/vim-devicons'
 call plug#end()
 
 " Vim Plug Commands
