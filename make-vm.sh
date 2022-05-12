@@ -58,13 +58,17 @@ create_br0() {
 		echo "br0 unavailable, creating..."
 		# dhcp_ip: host ip which is allocated by dhcp server
 		# eth0: indicates which interface owns dhcp_ip currently
-		dhcp_ip=192.169.1.1/24
+		# dateway: default gateway
+		dhcp_ip=192.169.12.114/24
 		eth0=eno4
-	        sudo ip link add br0 type bridge
+		gateway=192.168.12.1
+	    sudo ip link add br0 type bridge
 		sudo ip link set br0 up
 		sudo ip addr add $dhcp_ip dev br0
 		sudo ip addr flush dev $eth0
 		sudo ip link set $eth0 master br0
+		# remember to add default gateway
+		sudo ip route add default via $gateway
     	fi
 }
 
