@@ -68,8 +68,8 @@ create_br0() {
 		sudo ip addr flush dev $eth0
 		sudo ip link set $eth0 master br0
 		# remember to add default gateway
-		sudo ip route add default via $gateway
-    	fi
+		sudo ip route add default via $gateway dev br0
+    fi
 }
 
 create_tapk() {
