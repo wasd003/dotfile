@@ -20,9 +20,13 @@ enable_sriov() {
     netdev=$( ibdev2netdev|head -1|awk '{print $5}' )
     sriov_en=$(mlxconfig -d $hca_path q | \
         grep "SRIOV_EN" | awk '{print $2}')
+    echo "[Detect] hca_path:${hca_path} netdev:${netdev} sriov_en:${sriov_en}"
 
     if [[ "$sriov_en" != "True(1)" ]]; then
         echo "rdma sriov hasn't been enabled, enabling..."
+        [[ $test_mode == true ]] && \
+            echo "do nothing because of test mode" && \
+            exit 0
         read -p "please input VF Number: " vf_nr
         mlxconfig -d $hca_path set SRIOV_EN=1 NUM_OF_VFS=$vf_nr
         # after enabling sriov, reboot is needed. therefore, exit anyway
@@ -43,6 +47,7 @@ idx2pci_nr() {
     # skip pf anyway
     line_nr=$(($idx + 1))
     pci_nr=$(ibdev2netdev -v | \
+        sort -k 1 | \
         sed -n "${line_nr} p" | \
         awk '{print $1}')
     echo "$pci_nr"
@@ -53,8 +58,8 @@ idx2pci_nr() {
 enable_vf() {
     idx=$1
     pci_nr=$(idx2pci_nr $idx)
-    guid_idx=$((($idx-1)*2))
-    port_idx=$(($guid_idx+1))
+    guid_idx=$(( ($idx-1)*2+1 ))
+    port_idx=$(( $guid_idx+1 ))
     (( $guid_idx < 10 )) && guid_idx="0"$guid_idx
     (( $port_idx < 10 )) && port_idx="0"$port_idx
     guid="06:3f:72:03:00:d4:32:"$guid_idx
@@ -80,15 +85,30 @@ detach_vf() {
         pci_nr=$( ibdev2netdev -v|sed -n '2p'|awk '{print $1}' )
         pci_virsh_fmt=$(echo $pci_nr | \
             awk -F '[:.]' '{print "pci_"$1"_"$2"_"$3"_"$4}')
-        echo "pci_nr:$pci_nr pci_virsh_fmt:$pci_virsh_fmt"
+        echo "[Detach] pci_nr:$pci_nr pci_virsh_fmt:$pci_virsh_fmt"
         [[ $test_mode == false ]] && \
             virsh nodedev-detach $pci_virsh_fmt
     done
-    # virsh nodedev-reattach $pci_nr
+}
+
+reattach_vf() {
+	for (( i=1; i<=32; i++ )); do
+		pci_nr=$(awk '{print $4}' vf_pci|sed -n "$i p")
+        	pci_virsh_fmt=$(echo $pci_nr | \
+        	    awk -F '[:.]' '{print "pci_"$1"_"$2"_"$3"_"$4}')
+        	echo "[Reattach] pci_nr:$pci_nr pci_virsh_fmt:$pci_virsh_fmt"
+    		virsh nodedev-reattach $pci_virsh_fmt
+	done
 }
 
 main() {
+    [[ $(whoami) != "root" ]] && \
+        echo "Please run me as root :)" && \
+        exit 0
+
     [[ $1 == test ]]  && test_mode=true
+
+    #reattach_vf
 
     enable_sriov
 
