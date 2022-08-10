@@ -106,14 +106,11 @@ err_off = [
     238.8354444,
 ]
 
-clazz="8-VM"
-type="read_lat"
-y_label="avg latency (usec)"
-#y_label="Throughput (MB/sec)"
+# line color
 on_color="red"
 off_color="green"
 
-plt.xticks([x for x in range(max(x) + 1) ])
+plt.xticks([i for i in range(max(x) + 1) ])
 
 # draw line
 l_on=plt.plot(x,y_on,color=on_color,label='IOMMU ON')
@@ -127,8 +124,8 @@ plt.plot(x,y_off,color=off_color,marker='o',linestyle='dashed')
 plt.errorbar(x,y_on,yerr=err_on,color=on_color)
 plt.errorbar(x,y_off,yerr=err_off,color=off_color)
 
-plt.title('%s ib_%s' % (clazz, type))
+plt.title("%s-%s" % ("demo", "line"))
 plt.xlabel('log(size) (bytes)')
-plt.ylabel(y_label)
+plt.ylabel("avg latency (usec)")
 plt.legend()
-plt.savefig('images/%s_%s.png' % (clazz, type))
+plt.savefig("%s-%s.png" % ("demo", "line"))

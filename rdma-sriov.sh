@@ -62,8 +62,8 @@ enable_vf() {
     port_idx=$(( $guid_idx+1 ))
     (( $guid_idx < 10 )) && guid_idx="0"$guid_idx
     (( $port_idx < 10 )) && port_idx="0"$port_idx
-    guid="06:3f:72:03:00:d4:32:"$guid_idx
-    port="06:3f:72:03:00:d4:32:"$port_idx
+    guid="06:3f:72:03:00:d4:56:"$guid_idx
+    port="06:3f:72:03:00:d4:56:"$port_idx
     echo "vf_idx:$idx pci_nr:$pci_nr guid:$guid port:$port"
 
     if [[ $test_mode == false ]]; then
@@ -108,7 +108,7 @@ main() {
 
     [[ $1 == test ]]  && test_mode=true
 
-    #reattach_vf
+    # reattach_vf
 
     enable_sriov
 
