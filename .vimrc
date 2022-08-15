@@ -17,18 +17,23 @@ set smartindent
 set tabstop=4
 set softtabstop=4
 set shiftwidth=4
+set expandtab
 set backspace=indent,eol,start
 set guifont=Monaco:h17          " FontFamily and FontSize
 set t_Co=256
 set t_ut=
-
+set foldmethod=manual 
+" zfa{ to fold {}
+" zd to delete folding
 
 " Custom Commands
-nmap no :noh<CR>
+nmap noh :noh<CR>
 nnoremap <F2> :set paste<CR>i
 inoremap <F2> <Esc>:set paste<CR>i
 nnoremap nop :set nopaste<CR>
 inoremap nop <Esc>:set nopaste<CR>
+nnoremap now :set nowrap<CR>
+inoremap now <Esc>:set nowrap<CR>
 nnoremap <c-s> :w<CR> 
 inoremap <c-s> <Esc>:w<CR>
 nnoremap <c-z> u 
@@ -58,6 +63,11 @@ map <C-y> :NERDTreeToggle<CR>
 map <C-l> :tabn<CR>
 map <C-h> :tabp<CR>
 map <C-n> :tabnew<CR>
+
+
+" Minimal GDB
+nmap <c-b> :MinGDBToggleBP<CR>
+nmap <s-b> :MinGDBRefreshFile<CR>
 
 
 " Tmux Complete
@@ -181,7 +191,7 @@ function! <SID>show_doc()
 endfunction
 
 " CoC Plug
-let g:coc_global_extensions = ['coc-json', 'coc-marketplace', 'coc-python', 'coc-vimlsp', 'coc-cmake', 'coc-java']
+let g:coc_global_extensions = ['coc-json', 'coc-marketplace', 'coc-pyright', 'coc-vimlsp', 'coc-cmake', 'coc-highlight']
 " CoC Commands
 " CocList
 " CocList marketplace
@@ -190,7 +200,7 @@ let g:coc_global_extensions = ['coc-json', 'coc-marketplace', 'coc-python', 'coc
 
 
 " LeaderF
-let g:Lf_WindowPosition = 'popup'
+" let g:Lf_WindowPosition = 'popup'
 " use <Up> and <Down> to navigate result just like C-k and C-j
 let g:Lf_CommandMap = {'<C-K>': ['<Up>'], '<C-J>': ['<Down>']}
 let g:Lf_ShowDevIcons = 0
@@ -221,6 +231,8 @@ Plug 'MattesGroeger/vim-bookmarks'
 Plug 'Yggdroot/LeaderF', { 'do': ':LeaderfInstallCExtension'  }
 Plug 'wellle/tmux-complete.vim'
 Plug 'ryanoasis/vim-devicons'
+Plug 'Yggdroot/indentLine'
+Plug 'luochen1990/rainbow'
 call plug#end()
 
 " Vim Plug Commands
