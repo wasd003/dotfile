@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Enable SRIOV for RDMA with IB Mode
+
+
 # variable example
 #   netdev - ib0
 #   ibdev - mlx5_0
@@ -73,7 +76,7 @@ enable_vf() {
         echo $guid > /sys/class/infiniband/mlx5_0/device/sriov/$idx/node
         echo $port > /sys/class/infiniband/mlx5_0/device/sriov/$idx/port
         echo $pci_nr > /sys/bus/pci/drivers/mlx5_core/bind
-        echo Follow > /sys/class/infiniband/mlx5_0/device/sriov/$idx/policy
+        echo Follow > /sys/class/infiniband/mlx5_0/device/sriov/$idx/policy # Make VF Down->Active
     fi
 }
 
@@ -92,7 +95,7 @@ detach_vf() {
 }
 
 reattach_vf() {
-	for (( i=1; i<=32; i++ )); do
+	for (( i=1; i<=$vf_nr; i++ )); do
 		pci_nr=$(awk '{print $4}' vf_pci|sed -n "$i p")
         	pci_virsh_fmt=$(echo $pci_nr | \
         	    awk -F '[:.]' '{print "pci_"$1"_"$2"_"$3"_"$4}')

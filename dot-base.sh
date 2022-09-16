@@ -17,3 +17,6 @@ chsh -s /bin/zsh # set default shell to zsh
 wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | sh # install oh-my-zsh
 # install zplug
 curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh
+
+# install ccls
+sudo apt install ccls
