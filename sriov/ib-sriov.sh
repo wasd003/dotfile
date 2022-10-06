@@ -56,9 +56,8 @@ idx2pci_nr() {
     echo "$pci_nr"
 }
 
-# enable virtual function
 # @idx - vf number which ranges in [1, $vf_nr]
-enable_vf() {
+config_vf() {
     idx=$1
     pci_nr=$(idx2pci_nr $idx)
     guid_idx=$(( ($idx-1)*2+1 ))
@@ -115,9 +114,9 @@ main() {
 
     enable_sriov
 
-    # enable each vf
+    # config each vf
     for (( i = 1; i <= $vf_nr; i ++ )); do
-        enable_vf $i
+        config_vf $i
     done
 
     detach_vf
