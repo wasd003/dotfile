@@ -21,6 +21,7 @@ sudo apt -y install \
 	memcached \
 	libmemcached-tools \
 	mysql-server \
+    texlive-full \
 
 # install memaslap on ubuntu
 # wget https://launchpad.net/libmemcached/1.0/1.0.18/+download/libmemcached-1.0.18.tar.gz
