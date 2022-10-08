@@ -10,6 +10,9 @@ module_param(arg, int, S_IRUGO);
 extern bool record_toggle;
 extern bool print_toggle;
 
+extern atomic64_t send_msg_cnt;
+extern atomic64_t send_msg_tot;
+
 static int __init breakdown_init(void)
 {
 
@@ -25,6 +28,11 @@ static int __init breakdown_init(void)
                 print_toggle = (arg == 1);
                 pr_info("print_toggle set to %s", 
                                 print_toggle?"true":"false");
+                break;
+        case 2:
+                atomic64_set(&send_msg_cnt, 0);
+                atomic64_set(&send_msg_tot, 0);
+                pr_info("clear all stat data");
                 break;
         default:
                 pr_err("unexpected cmd:%d", cmd);
