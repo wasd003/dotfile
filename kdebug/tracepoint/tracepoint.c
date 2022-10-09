@@ -1,3 +1,7 @@
+/**
+ * 1. put folowing code in include/trace/events/skb.h (or any other trace header file placed under include/trace/events directory)
+ * 2. add #include <trace/events/skb.h> in c file
+ */
 TRACE_EVENT(dev_queue_xmit,
 
     TP_PROTO(struct sk_buff *skb),
