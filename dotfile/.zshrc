@@ -1,11 +1,15 @@
 
 
-#  _________  _   _ ____   ____  #
-# |__  / ___|| | | |  _ \ / ___| #
-#   / /\___ \| |_| | |_) | |     #
-#  / /_ ___) |  _  |  _ <| |___  #
-# /____|____/|_| |_|_| \_\\____| #
-#                                #
+ ######################################################
+#                                                      #
+#  __________  _________ ___ ______________________    #
+#  \____    / /   _____//   |   \______   \_   ___ \   #
+#    /     /  \_____  \/    ~    \       _/    \  \/   #
+#   /     /_  /        \    Y    /    |   \     \____  #
+#  /_______ \/_______  /\___|_  /|____|_  /\______  /  #
+#          \/        \/       \/        \/        \/   #
+#                                                      #
+ ######################################################
 
 
 # on-my-zsh
@@ -23,6 +27,7 @@ VI_MODE_RESET_PROMPT_ON_MODE_CHANGE=true
 VI_MODE_SET_CURSOR=true
 alias ohmyzsh="mate ~/.oh-my-zsh"
 source $ZSH/oh-my-zsh.sh
+
 
 # zplug
 # zplug install - Install packages in parallel
@@ -47,12 +52,18 @@ if [[ -f ~/.zplug/init.zsh ]] {
 bindkey '^j' autosuggest-execute
 bindkey '^l' autosuggest-accept
 
+export M5_PATH=/home/jch/Documents/run-gem/offical_assets/aarch-system-20210904
+
 # fd
 alias fd="fdfind"
 alias fda="fdfind -IH"
 
 # python module
 export PATH="$PATH:/home/jch/.local/bin"
+
+# flame graph for perf
+export PATH="$PATH:/home/jch/Downloads/FlameGraph"
+alias genflame="sudo perf script -f|stackcollapse-perf.pl|flamegraph.pl>flame.svg"
 
 # set git editor to vim
 export GIT_EDITOR=vim
@@ -66,9 +77,28 @@ export https_proxy=http://192.168.10.1:7890
 bindkey -r '\C-s'
 stty -ixon
 
-host=~/Documents/host-linux
-guest=~/Documents/guest-linux
+# z
+. ~/Downloads/z/z.sh
 
+# go
+export PATH=$PATH:/usr/local/go/bin
+
+# arm tool chain
+export PATH=$PATH:/usr/local/arm-toolchain/arm-gnu-toolchain-11.3.rel1-x86_64-aarch64-none-linux-gnu/bin
+
+# git alias
+alias gs='git status'
+alias gb='git branch'
+alias ga='git add .'
+alias gc='git commit --no-verify'
+alias gl='git log --graph --pretty=oneline --abbrev-commit --all'
+alias gc='git checkout'
+alias gp='git push'
+alias gd='git diff'
+
+alias bd="BaiduPCS-Go"
+
+# export M5_PATH=/home/jch/Documents/gem5/
 
 #################### custom command ####################
 
@@ -77,15 +107,14 @@ alias ta='tmux attach -t'
 alias tk='tmux kill-session -t'
 alias tn='tmux new -s'
 
-# list kernel
-alias lskernel='dpkg --list | grep linux-image'
-
 # cat printk
-alias cpk='sudo cat /proc/sys/kernel/printk'
+cpk() {
+	sudo cat /proc/sys/kernel/printk
+}
 
 # echo printk
 epk() {
-        sudo bash -c "echo $1 $2 $3 $4 > /proc/sys/kernel/printk"
+    sudo bash -c "echo $1 $2 $3 $4 > /proc/sys/kernel/printk"
 }
 
 # firewall 
@@ -101,6 +130,34 @@ rmswp() {
 	find . -type f -name "*.sw[klmnop]" -delete
 }
 
+# cross compile arm kernel
+makearm() {
+	make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- $@
+}
+
 # fzf
-# put this line at bottom of .zshrc
-source ~/opt/fzf/shell/key-bindings.zsh
+# enable key-binding
+source /usr/share/doc/fzf/examples/key-bindings.zsh
+
+#generate core dump
+ulimit -c unlimited
+gen_core() {
+    sudo bash -c "echo core > /proc/sys/kernel/core_pattern "
+}
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/home/jch/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/home/jch/miniconda3/etc/profile.d/conda.sh" ]; then
+        . "/home/jch/miniconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="/home/jch/miniconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+
+export QT_DEBUG_PLUGINS=1

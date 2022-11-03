@@ -13,18 +13,30 @@ syntax on
 set number
 set cursorline
 set hlsearch
-set smartindent
+set backspace=indent,eol,start
+" set guifont=Monaco:h17          " FontFamily and FontSize
+set t_Co=256
+set t_ut=
+set foldmethod=manual 
+
+
+" Fold Command
+" zf to fold
+" zf% to fold {}\()\[]...
+" zd to delete folding
+
+
+" Tab Size Settings
 set tabstop=4
 set softtabstop=4
 set shiftwidth=4
 set expandtab
-set backspace=indent,eol,start
-set guifont=Monaco:h17          " FontFamily and FontSize
-set t_Co=256
-set t_ut=
-set foldmethod=manual 
-" zfa{ to fold {}
-" zd to delete folding
+
+" Kernel Code Regulation
+autocmd FileType c setlocal tabstop=8
+autocmd FileType c setlocal softtabstop=8
+autocmd FileType c setlocal shiftwidth=8
+
 
 " Custom Commands
 nmap noh :noh<CR>
@@ -37,6 +49,8 @@ inoremap now <Esc>:set nowrap<CR>
 nnoremap <c-s> :w<CR> 
 inoremap <c-s> <Esc>:w<CR>
 nnoremap <c-z> u 
+nnoremap del "_dd 
+vnoremap del "_dd
 
 
 " Cursor Shape
@@ -63,15 +77,6 @@ map <C-y> :NERDTreeToggle<CR>
 map <C-l> :tabn<CR>
 map <C-h> :tabp<CR>
 map <C-n> :tabnew<CR>
-
-
-" Minimal GDB
-nmap <c-b> :MinGDBToggleBP<CR>
-nmap <s-b> :MinGDBRefreshFile<CR>
-
-
-" Tmux Complete
-" <c-x> <c-u> 
 
 
 " Vim Visual Multi
@@ -134,8 +139,13 @@ autocmd FileType python,shell,coffee set commentstring=#\ %s
 " let g:airline_theme='onehalfdark'
 
 " Theme - OneDark
-colorscheme onedark
-let g:airline_theme='onedark'
+" let g:airline_theme='onedark'
+" colorscheme onedark
+
+" Theme - NeoDark
+set termguicolors                " recommended
+colorscheme neodark"
+
 
 " Theme - CodeDark
 " colorscheme codedark
@@ -147,6 +157,7 @@ let g:airline_theme='onedark'
 
 
 " Coc.nvim 
+let g:coc_disable_startup_warning = 1
 set hidden
 set updatetime=100
 set shortmess+=c
@@ -225,6 +236,7 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'morhetz/gruvbox'
 Plug 'sonph/onehalf', { 'rtp': 'vim'  }
 Plug 'joshdick/onedark.vim'
+Plug 'KeitaNakamura/neodark.vim'
 Plug 'tomasiser/vim-code-dark'
 Plug 'sainnhe/sonokai'
 Plug 'MattesGroeger/vim-bookmarks'
@@ -233,6 +245,8 @@ Plug 'wellle/tmux-complete.vim'
 Plug 'ryanoasis/vim-devicons'
 Plug 'Yggdroot/indentLine'
 Plug 'luochen1990/rainbow'
+Plug 'junegunn/fzf', { 'dir': '~/opt/fzf'  }
+Plug 'junegunn/fzf.vim'
 call plug#end()
 
 " Vim Plug Commands
